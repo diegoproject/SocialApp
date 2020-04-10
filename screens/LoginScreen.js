@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 import {View, Text, StyleSheet, TextInput, TouchableOpacity, Image, StatusBar, LayoutAnimation} from 'react-native';
-import * as firebase from "firebase"
+import * as firebase from 'firebase'
 
 
 export default class LoginScreen extends React.Component {
@@ -25,16 +25,15 @@ export default class LoginScreen extends React.Component {
     
     render() {
         LayoutAnimation.easeInEaseOut();
-
         return (
             <View style={styles.container}>
                 <StatusBar barStyle="light-content"></StatusBar>
 
-                <Image source={require("../assets/AuthHeader.png")} style={{ height: 300, width: 500, marginTop: -176, marginLeft: -50 }}></Image>
+                <Image source={require("../assets/AuthHeader.png")} style={{ marginTop: -176, marginLeft: -50 }}></Image>
 
-                <Image source={require("../assets/AuthFooter.png")} style={{ height: 100, width: 500, position: "absolute", bottom: 5, right: 0}}></Image>
+                <Image source={require("../assets/AuthFooter.png")} style={{ position: "absolute", bottom: -325, right: -225}}></Image>
 
-                <Image source={require("../assets/loginLogo.png")} style={{height: 100, width: 100, marginTop: -110, alignSelf: "center"}}></Image>
+                <Image source={require("../assets/loginLogo.png")} style={{ marginTop: -110, alignSelf: "center"}}></Image>
 
 
                 <Text style={styles.greeting}>{`Bem-vindo(a) de volta.`}</Text>
@@ -72,7 +71,7 @@ export default class LoginScreen extends React.Component {
 
                 <TouchableOpacity 
                     style={{alignSelf: "center", marginTop: 32}} 
-                    onPress={() => this.props.navigation.navigate("Criar")}                
+                    onPress={() => this.props.navigation.navigate("Register")}                
                 >
                     <Text style={{ color: "#4149", fontSize: 13 }}> 
                         Novo na Frevou? <Text style={{ fontWeight: "500", color: "#E9446A" }}>Crie uma conta </Text>
@@ -88,7 +87,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     greeting: {
-        marginTop: 32,
+        marginTop: -32,
         fontSize: 18,
         fontWeight: "400",
         textAlign: "center"
@@ -129,5 +128,4 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center"
     }
-
 });

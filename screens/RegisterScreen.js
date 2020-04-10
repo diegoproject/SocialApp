@@ -1,7 +1,9 @@
-import React from "react";
+import React from 'react';
 import {View, Text, StyleSheet, TextInput, TouchableOpacity, Image, StatusBar} from 'react-native';
 import {Ionicons} from '@expo/vector-icons'
-import * as firebase from 'firebase'
+import Fire from '../Fire'
+import UserPermissions from '../utilities/UserPermissions'
+import * as ImagePicker from 'expo-image-picker'
 
 
 
@@ -11,22 +13,31 @@ export default class RegisterScreen extends React.Component {
     };
     
     state = {
-        name: "",
-        email: "",
-        password: "",
+        user: {
+            name: "",
+            email: "",
+            password: "",
+            avatar: null
+        },
         errorMessage: null
     };
 
+    handlePickAvatar = async () => {
+        UserPermissions.getCameraPermission()
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3]
+        })
+
+        if ( !result.cancelled ) {
+            this.setState({ user: {  ...this.state.user, avatar: result.uri }})
+        }
+    }
+
     handleSignUp = () => {
-        firebase
-            .auth()
-            .createUserWithEmailAndPassword(this.state.email, this.state.password)
-            .then(userCredentials => {
-                return userCredentials.user.updateProfile({
-                    displayName: this.state.name
-                });
-            })
-            .catch(error => this.setState({ errorMessage: error.message}));
+        Fire.shared.createUser(this.state.user)
     }
     
     render() {
@@ -34,34 +45,34 @@ export default class RegisterScreen extends React.Component {
             <View style={styles.container}>
             <StatusBar barStyle="light-content"></StatusBar>
 
-            <Image source={require("../assets/AuthHeader.png")} style={{ marginTop: -1016, marginLeft: -50 }}></Image>
+            <Image source={require("../assets/AuthHeader.png")} style={{ marginTop: -116, marginLeft: -50 }}></Image>
             <Image source={require("../assets/AuthFooter.png")} style={{ position: "absolute", bottom: -325, right: -225 }}></Image>            
 
-            <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.goBack()}>
+            <TouchableOpacity style={styles.back} onPress={ () => this.props.navigation.goBack()}>
                 <Ionicons name="ios-arrow-round-back" size={32} color="#FFF"></Ionicons>
             </TouchableOpacity>
 
             <View style={{position: "absolute", top:64, alignItems: "center", width: "100%"}}>
                 <Text style={styles.greeting}>{`Ok, agora vamos criar uma conta para você!`}</Text>
-                <TouchableOpacity style={styles.avatar}>    
+                <TouchableOpacity style={styles.avatarPlaceholder} onPress={this.handlePickAvatar}>
+                    <Image source={{uri: this.state.user.avatar}} style={styles.avatar}/>    
                     <Ionicons name="ios-add" size={40} color="#FFF" style={{marginTop: 6, marginLeft: 2}}></Ionicons>
                 </TouchableOpacity>
             </View>
             
             
-                <View style={styles.errorMessage}>
+            <View style={styles.errorMessage}>
                     {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
-                </View>
+            </View>
 
                 <View style={styles.form}>
-                    
                     <View>
                         <Text style={styles.inputTitle}>Nome</Text>
                         <TextInput 
                         style={styles.input} 
                         autoCapitalize="none"
-                        onChangeText={name => this.setState({ name })}
-                        value={this.state.name}    
+                        onChangeText={name => this.setState({ user: { ...this.state.user, name } })}
+                        value={this.state.user.name}    
                         ></TextInput>
                     </View>
                 
@@ -70,8 +81,8 @@ export default class RegisterScreen extends React.Component {
                         <TextInput 
                         style={styles.input} 
                         autoCapitalize="none"
-                        onChangeText={email => this.setState({ email })}
-                        value={this.state.email}    
+                        onChangeText={email => this.setState({ user: { ...this.state.user, email } })}
+                        value={this.state.user.email}    
                         ></TextInput>
                     </View>
 
@@ -80,8 +91,8 @@ export default class RegisterScreen extends React.Component {
                         <TextInput 
                         style={styles.input} secureTextEntry 
                         autoCapitalize="none"
-                        onChangeText={password => this.setState({ password })}
-                        value={this.state.password} 
+                        onChangeText={password => this.setState({ user: { ...this.state.user, password} })}
+                        value={this.state.user.password} 
                         ></TextInput>
                     </View>
                 </View>
@@ -161,13 +172,19 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center"
     },
-    avatar: {
+    avatarPlaceholder: {
         width: 100,
         height: 100,
-        borderRadius: 50,
         backgroundColor: "#E1E2E6",
+        borderRadius: 50,
         marginTop: 48,
         justifyContent: "center",
         alignItems: "center"
+    },
+    avatar: {
+        position: "absolute",
+        width: 100,
+        height: 100,
+        borderRadius: 50
     }
 });

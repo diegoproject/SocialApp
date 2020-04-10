@@ -1,10 +1,9 @@
 export default FirebaseKeys = {
-        apiKey: "AIzaSyBS6kqtIr6vgbVpLZ6zKKKXeziSGxBWTKk",
-        authDomain: "frevouauth-be619.firebaseapp.com",
-        databaseURL: "https://frevouauth-be619.firebaseio.com",
-        projectId: "frevouauth-be619",
-        storageBucket: "frevouauth-be619.appspot.com",
-        messagingSenderId: "162188183487",
-        appId: "1:162188183487:web:b10ce989b8ca145aa5830a",
-        measurementId: "G-WGSBY23WSB"
+        apiKey: "AIzaSyDJ8rEeC4Jalob01aEXW1d0L2c01VpTez8",
+        authDomain: "bdfrevou.firebaseapp.com",
+        databaseURL: "https://bdfrevou.firebaseio.com",
+        projectId: "bdfrevou",
+        storageBucket: "bdfrevou.appspot.com",
+        messagingSenderId: "824791008100",
+        appId: "1:824791008100:web:b6dd8c3dd10d90cbe9f071"
 }
